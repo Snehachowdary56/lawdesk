@@ -1,0 +1,18 @@
+body { font-family: system-ui, sans-serif; margin: 0; background: #f8fafc; color: #0f172a; }
+header { background: #1e3a8a; color: #fff; padding: 12px 24px; }
+header h1 { margin: 0; font-size: 1.3rem; }
+.dash { display: grid; grid-template-columns: 280px 1fr; gap: 16px; padding: 20px; }
+aside ul, .tasks { list-style: none; padding: 0; margin: 0; }
+aside button { width: 100%; text-align: left; padding: 10px; margin-bottom: 6px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; cursor: pointer; }
+aside button span { display: block; color: #64748b; font-size: .85rem; }
+aside button.active { border: 2px solid #1d4ed8; }
+.detail { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; }
+.tiles { display: flex; gap: 12px; }
+.tiles div { border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px 14px; }
+.tiles dt { color: #64748b; font-size: .8rem; } .tiles dd { margin: 0; font-size: 1.3rem; font-weight: 700; }
+.tasks li { padding: 8px; border-left: 4px solid #cbd5e1; margin-bottom: 6px; background: #f8fafc; }
+.tasks li.overdue { border-color: #b91c1c; } .tasks li.soon { border-color: #d97706; }
+.due { font-weight: 600; } small { color: #64748b; margin-left: 6px; }
+.error { color: #991b1b; background: #fef2f2; padding: 8px; border-radius: 6px; grid-column: 1 / -1; }
+@media (max-width: 700px) { .dash { grid-template-columns: 1fr; } }
+.note{margin:4px 0 0;font-size:.85rem;opacity:.85}
