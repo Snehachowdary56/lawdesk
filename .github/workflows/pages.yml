@@ -1,0 +1,43 @@
+name: Publish dashboard demo (GitHub Pages)
+on:
+  push:
+    branches: [main]
+    paths: ["web/**", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - run: npx jest --ci
+      - name: Build the demo site (sample data, no server)
+        run: |
+          mkdir -p site/src site/vendor
+          cp src/app.js src/styles.css site/src/
+          echo ".note{margin:4px 0 0;font-size:.85rem;opacity:.85}" >> site/src/styles.css
+          cp node_modules/angular/angular.min.js site/vendor/
+          sed -e 's#<script>window.LAWDESK_API = "http://localhost:3000";</script>#<script>window.LAWDESK_DEMO = true;</script>#' \
+              -e 's#node_modules/angular/angular.min.js#vendor/angular.min.js#' \
+              -e 's#<header><h1>LawDesk</h1></header>#<header><h1>LawDesk</h1><p class="note">Demo with made-up data. The full app runs against the Rails API.</p></header>#' \
+              index.html > site/index.html
+          touch site/.nojekyll
+      - name: Publish to the gh-pages branch
+        working-directory: web/site
+        run: |
+          git init -q -b gh-pages
+          git config user.name "Snehachowdary56"
+          git config user.email "snehagunturu@gmail.com"
+          git add -A
+          git commit -q -m "Publish dashboard demo"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" gh-pages

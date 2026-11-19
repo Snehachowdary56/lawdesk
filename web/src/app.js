@@ -14,13 +14,53 @@
     };
   });
 
-  app.factory("lawdeskApi", ["$http", "API_URL", function ($http, API_URL) {
+  app.factory("lawdeskApi", ["$http", "$q", "API_URL", "demoData", function ($http, $q, API_URL, demoData) {
     function data(res) { return res.data; }
+    // Demo mode (GitHub Pages has no server): serve the same shapes from bundled sample data.
+    if (typeof window !== "undefined" && window.LAWDESK_DEMO) {
+      return {
+        matters: function () { return $q.resolve(demoData.matters); },
+        matter: function (id) { return $q.resolve(demoData.details[id]); },
+        tasks: function (id) { return $q.resolve(demoData.tasks[id] || []); },
+        search: function () { return $q.resolve({ results: [] }); }
+      };
+    }
     return {
       matters: function (status) { return $http.get(API_URL + "/matters", { params: { status: status || "open" } }).then(data); },
       matter: function (id) { return $http.get(API_URL + "/matters/" + id).then(data); },
       tasks: function (id) { return $http.get(API_URL + "/matters/" + id + "/tasks").then(data); },
       search: function (q) { return $http.get(API_URL + "/documents/search", { params: { q: q } }).then(data); }
+    };
+  }]);
+
+  // Made-up sample data for the demo page; due dates are set relative to today so the colours always show.
+  app.factory("demoData", ["today", function (today) {
+    function inDays(n) {
+      var d = today();
+      d.setDate(d.getDate() + n);
+      return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    }
+    var matters = [
+      { id: 1, title: "Smith v. Harbour Properties", practice_area: "Litigation", status: "open" },
+      { id: 2, title: "Estate of R. Patel", practice_area: "Wills and Estates", status: "open" },
+      { id: 3, title: "Lakeview Dental: employment contracts", practice_area: "Employment", status: "open" }
+    ];
+    return {
+      matters: matters,
+      details: {
+        1: angular.extend({ summary: { billable_hours: 12.4, unbilled_cents: 186000, billed_cents: 125000 } }, matters[0]),
+        2: angular.extend({ summary: { billable_hours: 5.2, unbilled_cents: 52000, billed_cents: 78000 } }, matters[1]),
+        3: angular.extend({ summary: { billable_hours: 3.0, unbilled_cents: 90000, billed_cents: 0 } }, matters[2])
+      },
+      tasks: {
+        1: [
+          { id: 11, title: "Serve and file a Statement of Defence", due_on: inDays(4), source: "rules" },
+          { id: 12, title: "Deliver an affidavit of documents", due_on: inDays(-2), source: "llm" },
+          { id: 13, title: "Attend settlement conference", due_on: inDays(26), source: "rules" }
+        ],
+        2: [{ id: 21, title: "File the estate inventory", due_on: inDays(15), source: "manual" }],
+        3: []
+      }
     };
   }]);
 

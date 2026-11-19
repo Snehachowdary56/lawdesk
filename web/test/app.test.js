@@ -90,3 +90,17 @@ test("renders the template: list, money tiles and deadline labels", () => {
   expect(text).toContain("found by AI");
   expect(el[0].querySelectorAll(".tasks li.overdue")).toHaveLength(1);
 });
+
+test("demo mode serves sample data without a server", () => {
+  window.LAWDESK_DEMO = true;
+  try {
+    const inj = boot("2027-01-10");
+    const ctrl = inj.get("$componentController")("matterDashboard", null);
+    ctrl.$onInit();
+    inj.get("$rootScope").$digest();
+    expect(ctrl.matters).toHaveLength(3);
+    expect(ctrl.tasks.map((t) => ctrl.urgency(t))).toEqual(["overdue", "soon", "later"]);
+  } finally {
+    delete window.LAWDESK_DEMO;
+  }
+});

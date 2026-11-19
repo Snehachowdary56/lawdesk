@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/Snehachowdary56/lawdesk/actions/workflows/ci.yml/badge.svg)](https://github.com/Snehachowdary56/lawdesk/actions/workflows/ci.yml)
 
+**Dashboard demo:** https://snehachowdary56.github.io/lawdesk/ (AngularJS, made-up sample data)
+
 A small legal practice management product: a **Ruby on Rails** API, an **AngularJS** web dashboard and a
 **React Native** time-tracking app for lawyers. It covers what law firms do every day: open matters (cases), check for conflicts of interest,
 track billable time, send invoices, search case documents, and catch deadlines.
@@ -29,7 +31,7 @@ flowchart LR
 GitHub Actions runs everything on every push:
 
 - **API:** Minitest model, service and API tests against real **MySQL 8, Redis 7 and Elasticsearch 8**
-- **Web:** 6 AngularJS tests with ngMock in Jest
+- **Web:** 7 AngularJS tests with ngMock in Jest
 - **Mobile:** TypeScript type check and 11 Jest tests (billing rounding, offline queue, sync, screens with React Native Testing Library)
 
 ## Run it
