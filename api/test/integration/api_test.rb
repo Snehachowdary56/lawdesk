@@ -75,3 +75,12 @@ class TimeEntrySyncTest < ActionDispatch::IntegrationTest
     assert_equal 7_500, response.parsed_body["amount_cents"]
   end
 end
+
+class CorsTest < ActionDispatch::IntegrationTest
+  test "the web dashboard's origin is allowed, others are not" do
+    get "/matters", headers: { "Origin" => "http://localhost:8080" }
+    assert_equal "http://localhost:8080", response.headers["Access-Control-Allow-Origin"]
+    get "/matters", headers: { "Origin" => "https://evil.example" }
+    assert_nil response.headers["Access-Control-Allow-Origin"]
+  end
+end

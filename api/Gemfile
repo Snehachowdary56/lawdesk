@@ -8,3 +8,4 @@ gem "elasticsearch", "~> 8.15"
 
 # connection_pool 3.x changed its constructor; Rails 7.2's Redis cache store expects 2.x
 gem "connection_pool", "~> 2.4"
+gem "rack-cors", "~> 2.0"
