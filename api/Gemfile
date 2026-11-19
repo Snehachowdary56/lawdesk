@@ -5,3 +5,6 @@ gem "mysql2", "~> 0.5"
 gem "puma", ">= 5.0"
 gem "redis", "~> 5.3"
 gem "elasticsearch", "~> 8.15"
+
+# connection_pool 3.x changed its constructor; Rails 7.2's Redis cache store expects 2.x
+gem "connection_pool", "~> 2.4"
