@@ -55,3 +55,7 @@ npx expo start
 ```
 
 Then open the app in Expo Go on a phone.
+
+## Bug write-ups
+
+See [BUGS.md](BUGS.md) for what caused the bugs I hit and how each one was fixed.
