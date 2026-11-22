@@ -30,9 +30,24 @@ flowchart LR
 
 GitHub Actions runs everything on every push:
 
-- **API:** Minitest model, service and API tests against real **MySQL 8, Redis 7 and Elasticsearch 8**
+- **API:** 44 Minitest model, service and API tests against real **MySQL 8, Redis 7 and Elasticsearch 8**
 - **Web:** 7 AngularJS tests with ngMock in Jest
 - **Mobile:** TypeScript type check and 11 Jest tests (billing rounding, offline queue, sync, screens with React Native Testing Library)
+
+## Built test-first: weekly time report
+
+`GET /matters/:id/time_report?from=2026-10-01&to=2026-10-14` returns, for each week (starting Monday), billable and
+non-billable hours and billed and unbilled amounts, plus totals. Weeks with no time are listed with zeros, so a chart has no gaps;
+a range that ends before it starts, is longer than a year, or has a bad date is a 400 with a clear message.
+
+It was built with test-driven development in [pull request #1](https://github.com/Snehachowdary56/lawdesk/pull/1):
+
+1. Wrote 6 service tests for `TimeReport` and pushed them first: CI failed (`TimeReport` did not exist).
+2. Wrote `app/services/time_report.rb` until they passed.
+3. Wrote 3 API tests for the endpoint and pushed them: CI failed (no route).
+4. Added the route and `TimeReportsController` until they passed.
+
+The PR's CI runs show red, green, red, green.
 
 ## Run it
 
