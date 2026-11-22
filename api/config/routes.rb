@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :time_entries, only: %i[create]
     resources :invoices, only: %i[create]
     resources :tasks, only: %i[index]
+    resource :time_report, only: %i[show]
   end
   get "documents/search" => "documents#search"
   post "documents/:id/deadlines" => "tasks#extract"
